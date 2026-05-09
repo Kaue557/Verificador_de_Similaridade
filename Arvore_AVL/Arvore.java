@@ -4,18 +4,19 @@ public class Arvore {
 
     private No raiz;
 
-    // INSERÇÃO
-    public No inserir(No no, int valor) {
+    // INSERÇÃO V.2
+    public No inserir(double similaridade, Resultado resultado){
         if (no == null) {
-            return new No(valor);
+            return new No(similaridade);
         }
 
-        if (valor < no.getValor()) {
-            no.setEsquerda(inserir(no.getEsquerda(), valor));
-        } else if (valor > no.getValor()) {
-            no.setDireita(inserir(no.getDireita(), valor));
-        } else {
-            return no; // não permite duplicados
+        if (similaridade < no.getSimilaridade()) {
+            no.setEsquerda(inserir(no.getEsquerda(), similaridade));
+        } else if (similaridade > no.getSimilaridade()) {
+            no.setDireita(inserir(no.getDireita(), similaridade));
+        } else { // agora permite duplicados
+            no.getResultados().add(resultado); // adiciona na lista
+            return no;
         }
 
         // Atualiza balanceamento
@@ -25,23 +26,23 @@ public class Arvore {
         // CASOS DE ROTAÇÃO
 
         // rotacao direita
-        if (balance > 1 && valor < no.getEsquerda().getValor()) {
+        if (balance > 1 && similaridade < no.getEsquerda().getSimilaridade()) {
             return rotacaoDireita(no);
         }
 
         // rotacao esquerda
-        if (balance < -1 && valor > no.getDireita().getValor()) {
+        if (balance < -1 && similaridade > no.getDireita().getSimilaridade()) {
             return rotacaoEsquerda(no);
         }
 
         // esquerda + direita
-        if (balance > 1 && valor > no.getEsquerda().getValor()) {
+        if (balance > 1 && similaridade > no.getEsquerda().getSimilaridade()) {
             no.setEsquerda(rotacaoEsquerda(no.getEsquerda()));
             return rotacaoDireita(no);
         }
 
         // direita + esquerda
-        if (balance < -1 && valor < no.getDireita().getValor()) {
+        if (balance < -1 && similaridade < no.getDireita().getSimilaridade()) {
             no.setDireita(rotacaoDireita(no.getDireita()));
             return rotacaoEsquerda(no);
         }
@@ -49,14 +50,14 @@ public class Arvore {
         return no;
     }
 
-    public No remover(No no, int valor) {
+    public No remover(No no, int similaridade) {
         if (no == null) return null;
 
         // BUSCA
-        if (valor < no.getValor()) {
-            no.setEsquerda(remover(no.getEsquerda(), valor));
-        } else if (valor > no.getValor()) {
-            no.setDireita(remover(no.getDireita(), valor));
+        if (similaridade < no.getSimilaridade()) {
+            no.setEsquerda(remover(no.getEsquerda(), similaridade));
+        } else if (similaridade > no.getSimilaridade()) {
+            no.setDireita(remover(no.getDireita(), similaridade));
         } else {
 
             // NÓ ENCONTRADO
@@ -79,9 +80,9 @@ public class Arvore {
             }
 
             // Caso 2: dois filhos
-            No sucessor = menorValor(no.getDireita());
-            no.setValor(sucessor.getValor());
-            no.setDireita(remover(no.getDireita(), sucessor.getValor()));
+            No sucessor = menorsimilaridade(no.getDireita());
+            no.setsimilaridade(sucessor.getSimilaridade());
+            no.setDireita(remover(no.getDireita(), sucessor.getSimilaridade()));
         }
 
 
@@ -113,7 +114,7 @@ public class Arvore {
         return no;
     }
 
-    private No menorValor(No no) {
+    private No menorsimilaridade(No no) {
         No atual = no;
         while (atual.getEsquerda() != null) {
             atual = atual.getEsquerda();
@@ -121,15 +122,17 @@ public class Arvore {
         return atual;
     }
 
-    public void remover(int valor) {
-        raiz = remover(raiz, valor);
+    public void remover(int similaridade) {
+        raiz = remover(raiz, similaridade);
     }
 
 
-    // ALTURA
+    // ALTURA V.2
     private int altura(No no) {
-        if (no == null) return 0;
-        return 1 + Math.max(altura(no.getEsquerda()), altura(no.getDireita()));
+        if (no == null)
+            return 0;
+
+        return no.getAltura();
     }
 
 
@@ -165,8 +168,8 @@ public class Arvore {
 
 
     // METODO PÚBLICO
-    public void inserir(int valor) {
-        raiz = inserir(raiz, valor);
+    public void inserir(int similaridade) {
+        raiz = inserir(raiz, similaridade);
     }
 
     public No getRaiz() {
@@ -179,14 +182,14 @@ public class Arvore {
     public void emOrdem(No atual) { // esquerda - raiz - direita
         if (atual != null) {
             emOrdem(atual.getEsquerda());
-            System.out.println(atual.getValor());
+            System.out.println(atual.getSimilaridade());
             emOrdem(atual.getDireita());
         }
     }
 
     public void preOrdem(No atual) { // raiz - esquerda - direita
         if (atual != null) {
-            System.out.println(atual.getValor());
+            System.out.println(atual.getSimilaridade());
             preOrdem(atual.getEsquerda());
             preOrdem(atual.getDireita());
         }
@@ -196,7 +199,7 @@ public class Arvore {
         if (atual != null) {
             posOrdem(atual.getEsquerda());
             posOrdem(atual.getDireita());
-            System.out.println(atual.getValor());
+            System.out.println(atual.getSimilaridade());
         }
     }
 }
