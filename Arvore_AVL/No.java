@@ -22,12 +22,18 @@ public class No {
         this.altura = 1;
     }
 
-    // GETTER E SETTER PARA VALOR --------------------
+    // GETTER E SETTER PARA RESULTADO --------------------
+    public ArrayList<> getResultados(){
+        return resultados;
+    }
+
+
+    // GETTER E SETTER PARA SIMILARIDADE --------------------
     public double getSimilaridade() {
         return similaridade;
     }
 
-    public void setValor(double similaridade) {
+    public void setSimilaridade(double similaridade) {
         this.similaridade = similaridade;
     }
 
