@@ -5,15 +5,19 @@ public class Arvore {
     private No raiz;
 
     // INSERÇÃO V.2
-    public No inserir(double similaridade, Resultado resultado){
+    public No inserir(No no, double similaridade, Resultado resultado){
+        // CASO BASE
         if (no == null) {
-            return new No(similaridade);
+            No novoNo = new No(similaridade);
+            novoNo.getResultados().add(resultado);
+            return novoNo;
         }
 
-        if (similaridade < no.getSimilaridade()) {
-            no.setEsquerda(inserir(no.getEsquerda(), similaridade));
-        } else if (similaridade > no.getSimilaridade()) {
-            no.setDireita(inserir(no.getDireita(), similaridade));
+        if (similaridade < no.getSimilaridade()) { // similaridade menor, desce pra esquerda
+            no.setEsquerda(inserir(no.getEsquerda(), similaridade, resultado));
+
+        } else if (similaridade > no.getSimilaridade()) { // similaridade maior, desce pra direita
+            no.setDireita(inserir(no.getDireita(), similaridade, resultado));
         } else { // agora permite duplicados
             no.getResultados().add(resultado); // adiciona na lista
             return no;
