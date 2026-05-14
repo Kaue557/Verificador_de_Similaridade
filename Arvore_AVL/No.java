@@ -23,7 +23,7 @@ public class No {
     }
 
     // GETTER E SETTER PARA RESULTADO --------------------
-    public ArrayList<> getResultados(){
+    public ArrayList<Resultado> getResultados(){
         return resultados;
     }
 

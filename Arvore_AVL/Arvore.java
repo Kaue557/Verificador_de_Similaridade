@@ -15,13 +15,20 @@ public class Arvore {
 
         if (similaridade < no.getSimilaridade()) { // similaridade menor, desce pra esquerda
             no.setEsquerda(inserir(no.getEsquerda(), similaridade, resultado));
-
         } else if (similaridade > no.getSimilaridade()) { // similaridade maior, desce pra direita
             no.setDireita(inserir(no.getDireita(), similaridade, resultado));
         } else { // agora permite duplicados
             no.getResultados().add(resultado); // adiciona na lista
             return no;
         }
+
+        // Atualiza altura
+        no.setAltura(
+                1 + Math.max(
+                        altura(no.getEsquerda()),
+                        altura(no.getDireita())
+                )
+        );
 
         // Atualiza balanceamento
         int balance = fatorBalanceamento(no);
@@ -85,10 +92,16 @@ public class Arvore {
 
             // Caso 2: dois filhos
             No sucessor = menorsimilaridade(no.getDireita());
-            no.setsimilaridade(sucessor.getSimilaridade());
-            no.setDireita(remover(no.getDireita(), sucessor.getSimilaridade()));
+            no.setSimilaridade(sucessor.getSimilaridade());
+            no.setDireita(remover(no.getDireita(), (int) sucessor.getSimilaridade()));
         }
 
+        no.setAltura(
+                1 + Math.max(
+                        altura(no.getEsquerda()),
+                        altura(no.getDireita())
+                )
+        );
 
         // REBALANCEAMENTO
         int balance = fatorBalanceamento(no);
@@ -155,6 +168,20 @@ public class Arvore {
         x.setDireita(y);
         y.setEsquerda(T2);
 
+        y.setAltura(
+                1 + Math.max(
+                        altura(y.getEsquerda()),
+                        altura(y.getDireita())
+                )
+        );
+
+        x.setAltura(
+                1 + Math.max(
+                        altura(x.getEsquerda()),
+                        altura(x.getDireita())
+                )
+        );
+
         return x;
     }
 
@@ -167,13 +194,27 @@ public class Arvore {
         y.setEsquerda(x);
         x.setDireita(T2);
 
+        x.setAltura(
+                1 + Math.max(
+                        altura(x.getEsquerda()),
+                        altura(x.getDireita())
+                )
+        );
+
+        y.setAltura(
+                1 + Math.max(
+                        altura(y.getEsquerda()),
+                        altura(y.getDireita())
+                )
+        );
+
         return y;
     }
 
 
     // METODO PÚBLICO
-    public void inserir(int similaridade) {
-        raiz = inserir(raiz, similaridade);
+    public void inserir(double similaridade, Resultado resultado) {
+        raiz = inserir(raiz, similaridade, resultado);
     }
 
     public No getRaiz() {
@@ -186,14 +227,26 @@ public class Arvore {
     public void emOrdem(No atual) { // esquerda - raiz - direita
         if (atual != null) {
             emOrdem(atual.getEsquerda());
+
             System.out.println(atual.getSimilaridade());
+
+            for (Resultado r : atual.getResultados()) {
+                System.out.println(r);
+            }
+
             emOrdem(atual.getDireita());
         }
     }
 
     public void preOrdem(No atual) { // raiz - esquerda - direita
         if (atual != null) {
+
             System.out.println(atual.getSimilaridade());
+
+            for (Resultado r : atual.getResultados()) {
+                System.out.println(r);
+            }
+
             preOrdem(atual.getEsquerda());
             preOrdem(atual.getDireita());
         }
@@ -203,7 +256,12 @@ public class Arvore {
         if (atual != null) {
             posOrdem(atual.getEsquerda());
             posOrdem(atual.getDireita());
+
             System.out.println(atual.getSimilaridade());
+
+            for (Resultado r : atual.getResultados()) {
+                System.out.println(r);
+            }
         }
     }
 }
