@@ -3,6 +3,16 @@ package arvore_AVL;
 public class Arvore {
 
     private No raiz;
+    private int rotacoesSimples;
+    private int rotacoesDuplas;
+
+    public int getRotacoesSimples() {
+        return rotacoesSimples;
+    }
+
+    public int getRotacoesDuplas() {
+        return rotacoesDuplas;
+    }
 
     // INSERÇÃO V.2
     public No inserir(No no, double similaridade, Resultado resultado){
@@ -38,22 +48,26 @@ public class Arvore {
 
         // rotacao direita
         if (balance > 1 && similaridade < no.getEsquerda().getSimilaridade()) {
+            rotacoesSimples++;
             return rotacaoDireita(no);
         }
 
         // rotacao esquerda
         if (balance < -1 && similaridade > no.getDireita().getSimilaridade()) {
+            rotacoesSimples++;
             return rotacaoEsquerda(no);
         }
 
         // esquerda + direita
         if (balance > 1 && similaridade > no.getEsquerda().getSimilaridade()) {
+            rotacoesDuplas++;
             no.setEsquerda(rotacaoEsquerda(no.getEsquerda()));
             return rotacaoDireita(no);
         }
 
         // direita + esquerda
         if (balance < -1 && similaridade < no.getDireita().getSimilaridade()) {
+            rotacoesDuplas++;
             no.setDireita(rotacaoDireita(no.getDireita()));
             return rotacaoEsquerda(no);
         }
@@ -61,7 +75,7 @@ public class Arvore {
         return no;
     }
 
-    public No remover(No no, int similaridade) {
+    public No remover(No no, double similaridade) {
         if (no == null) return null;
 
         // BUSCA
@@ -93,7 +107,7 @@ public class Arvore {
             // Caso 2: dois filhos
             No sucessor = menorsimilaridade(no.getDireita());
             no.setSimilaridade(sucessor.getSimilaridade());
-            no.setDireita(remover(no.getDireita(), (int) sucessor.getSimilaridade()));
+            no.setDireita(remover(no.getDireita(), sucessor.getSimilaridade()));
         }
 
         no.setAltura(
@@ -139,7 +153,7 @@ public class Arvore {
         return atual;
     }
 
-    public void remover(int similaridade) {
+    public void remover(double similaridade) {
         raiz = remover(raiz, similaridade);
     }
 
