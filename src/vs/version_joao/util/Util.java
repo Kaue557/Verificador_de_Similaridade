@@ -66,7 +66,7 @@ public class Util {
         "seus", "nao", "não", "como", "pelo", "pela", "nos", "nas", "qual"
     };
 
-    HashTable hashStopWords = new HashTable(71);
+    HashTable hashStopWords = new HashTable(151, 1);
         
         for(int i = 0; i < stopWordsPadrao.length; i++){
             hashStopWords.put(stopWordsPadrao[i]);

@@ -1,6 +1,6 @@
 package version_joao.util;
 
-class HashTable {
+public class HashTable {
 
     int size;
 
@@ -19,10 +19,10 @@ class HashTable {
     //
     // NÃO APAGUE! Esta classe é a base da estrutura.
     public static class Data {
-        String key;
-        int valor;
+        public String key;
+        public int valor;
         // Já implementa um encadeamento simples!
-        Data prox;
+        public Data prox;
 
         public Data(String k, int v) {
             this.key = k;
@@ -43,9 +43,20 @@ class HashTable {
     //
     // Recomenda-se utilizar números primos para melhorar a
     // distribuição das chaves.
-    public HashTable(int s) {
+    private int tipoHash; // 1 = Divisão, 2 = Multiplicação
+
+    // Atualize o construtor para receber o tipo
+    public HashTable(int s, int tipoHash) {
         this.size = s;
+        this.tipoHash = tipoHash;
         this.hashTable = new Data[size];
+    }
+
+    public int calcularHash(String chave) {
+        if (this.tipoHash == 2) {
+            return Mhash(chave); // Usa Multiplicação
+        }
+        return Dhash(chave);     // Usa Divisão (Padrão)
     }
 
     // Converte uma String em um valor inteiro.
@@ -259,4 +270,10 @@ class HashTable {
     // 3. Substitui o vetor antigo pelo novo vetor redimensionado
     this.hashTable = novoVetor;
 }
+
+
+    public Data[] getTable() {
+        return hashTable;
+    }
+
 }
