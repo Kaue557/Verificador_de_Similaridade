@@ -4,4 +4,5 @@ Total de pares comparados: 1
 Função hash utilizada: Divisão (Dhash)
 Métrica de similaridade: Cosseno
 
-Pares com similaridade >= 0.5:
+Pares com similaridade >= 0.3:
+a1.txt <-> a2.txt = 0,42

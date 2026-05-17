@@ -1,5 +1,8 @@
 package Arvore_AVL;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AVLTree {
 
     private No raiz;
@@ -251,5 +254,63 @@ public class AVLTree {
                 System.out.println(r);
             }
         }
+    }
+
+    // =========================================================================
+    // BUSCAS CUSTOMIZADAS (Encapsuladas na Árvore)
+    // =========================================================================
+
+    public List<Resultado> obterTopK(int k) {
+        List<Resultado> lista = new ArrayList<>();
+        coletarTopK(this.raiz, lista, k);
+        return lista;
+    }
+
+    private void coletarTopK(No no, List<Resultado> lista, int k) {
+        if (no != null && lista.size() < k) {
+            coletarTopK(no.getDireita(), lista, k); // Maiores primeiro
+            for (Resultado res : no.getResultados()) {
+                if (lista.size() < k) {
+                    lista.add(res);
+                } else break;
+            }
+            coletarTopK(no.getEsquerda(), lista, k);
+        }
+    }
+
+    public List<Resultado> obterAcimaLimiar(double limiar) {
+        List<Resultado> lista = new ArrayList<>();
+        coletarAcimaLimiar(this.raiz, limiar, lista);
+        return lista;
+    }
+
+    private void coletarAcimaLimiar(No no, double limiar, List<Resultado> lista) {
+        if (no != null) {
+            coletarAcimaLimiar(no.getDireita(), limiar, lista);
+            if (no.getSimilaridade() >= limiar) {
+                lista.addAll(no.getResultados());
+            }
+            coletarAcimaLimiar(no.getEsquerda(), limiar, lista);
+        }
+    }
+
+    public String buscarPar(String doc1, String doc2) {
+        return buscarParEspecifico(this.raiz, doc1, doc2);
+    }
+
+    private String buscarParEspecifico(No no, String doc1, String doc2) {
+        if (no == null) return null;
+
+        String achouDireita = buscarParEspecifico(no.getDireita(), doc1, doc2);
+        if (achouDireita != null) return achouDireita;
+
+        for (Resultado res : no.getResultados()) {
+            if ((res.getDoc1().equals(doc1) && res.getDoc2().equals(doc2)) ||
+                    (res.getDoc1().equals(doc2) && res.getDoc2().equals(doc1))) {
+                return String.format("%.2f", res.getSimilaridade());
+            }
+        }
+
+        return buscarParEspecifico(no.getEsquerda(), doc1, doc2);
     }
 }

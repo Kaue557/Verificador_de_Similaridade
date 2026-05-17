@@ -81,19 +81,28 @@ public class Main {
         // Delega a busca baseada no Modo
         if (modo.equals("lista")) {
             sb.append("Pares com similaridade >= ").append(limiar).append(":\n");
-            coletarAcimaLimiar(arvore.getRaiz(), limiar, sb);
+            for (Resultado r : arvore.obterAcimaLimiar(limiar)) {
+                sb.append(r.toString()).append("\n");
+            }
         }
         else if (modo.equals("busca") && args.length >= 5) {
             String docA = args[3];
             String docB = args[4];
             sb.append("Comparando: ").append(docA).append(" <-> ").append(docB).append("\n");
-            buscarParEspecifico(arvore.getRaiz(), docA, docB, sb);
+
+            String similaridadeAchada = arvore.buscarPar(docA, docB);
+            if(similaridadeAchada != null) {
+                sb.append("Similaridade calculada: ").append(similaridadeAchada).append("\n");
+            } else {
+                sb.append("Par não encontrado.\n");
+            }
         }
         else if (modo.equals("topk") && args.length >= 4) {
             int k = Integer.parseInt(args[3]);
             sb.append("Top ").append(k).append(" pares mais semelhantes:\n");
-            // Passamos um array de 1 posição para servir como contador por referência durante a recursão
-            coletarTopK(arvore.getRaiz(), new int[]{0}, k, sb);
+            for (Resultado r : arvore.obterTopK(k)) {
+                sb.append(r.toString()).append("\n");
+            }
         } else {
             sb.append("Modo ou argumentos inválidos.\n");
         }
