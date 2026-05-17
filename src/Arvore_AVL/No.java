@@ -1,4 +1,4 @@
-package arvore_AVL;
+package Arvore_AVL;
 
 import java.util.ArrayList;
 
