@@ -1,5 +1,3 @@
-package Arvore_AVL;
-
 import java.util.ArrayList;
 
 public class No {

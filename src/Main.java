@@ -1,14 +1,7 @@
-package version_joao;
-
-import Arvore_AVL.AVLTree;
-import Arvore_AVL.No;
-import Arvore_AVL.Resultado;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 

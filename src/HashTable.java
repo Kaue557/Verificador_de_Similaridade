@@ -1,5 +1,3 @@
-package version_joao;
-
 class HashTable {
 
     int size;

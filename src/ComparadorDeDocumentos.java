@@ -1,5 +1,3 @@
-package version_joao; // ou o pacote adequado do seu projeto
-
 public class ComparadorDeDocumentos {
 
     /**
