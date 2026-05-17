@@ -1,0 +1,7 @@
+=== VERIFICADOR DE SIMILARIDADE DE TEXTOS ===
+Total de documentos processados: 2
+Total de pares comparados: 1
+Função hash utilizada: Divisão (Dhash)
+Métrica de similaridade: Cosseno
+
+Pares com similaridade >= 0.5:
